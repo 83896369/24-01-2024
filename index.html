@@ -1,0 +1,1335 @@
+<html>
+    <head>
+        <title>Page 151-174</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="underline"></div>
+        <h1>Appendix F. Auditing and the ihsaudit.xml File</h1>
+        <div class="ppp">
+            <p class="move">
+                The NetView management console includes auditing capability and enables a log of various actions taken on the NetView management console topology console and NetView management console topology server which can be used as an audit trail. This auditing function is based on and operated by the topology server. An XML (Extensible Markup Language) file, ihsaudit.xml, that is located in the
+                %BINDIR%/TDS/server/log directory contains the auditing information. The ihsaudit.xml file can be edited by an ASCII text editor. This log can be displayed in a web browser, or other application, which supports XML.
+            </p>
+            <p class="move">
+                <b>Note: </b>For display from a web browser, the browser must support either CSS (Cascading Style Sheet) or XSL (Extensible Style sheet Language) to enable the display of the log data from the ihsaudit.xml file.
+            </p>
+            <p class="move">
+                The following NetView management console functions can be audited:<br>
+                Starting and stopping of the NetView management console topology server<br>
+                Using the NetView NETCONV command to start and stop communication between the host and server<br>
+                Signing on and off of the NetView management console topology console<br>
+                Signing on and off of the command profile editor (CPE) batch utility<br>
+                Starting command<br>
+                Command reponses<br>
+                Open view requests, including locate resource requests<br>
+                Open view responses<br>
+                Closing views<br>
+                View Customization<br>
+                Flag change requests, including note changes and list suspended resources requests<br>
+                Send message requests<br>
+                Aggregation priority and threshold change requests
+            </p>
+            <p class="move">
+                To specify which functions are to be audited, edit the <span>server.properties</span> file located in the <span>%BINDIR%\TDS\</span>server\config directory. For more details on editing this file, see “Auditing Functions and the Server.Properties File” on page 11. The size of the <span>ihsaudit.xml</span> file can also be set. For more information about this function in the <span>server.properties</span> file, see “Customizing the Size of the Audit Log” on page 14.
+            </p>
+            <div class="underline1"></div>
+            <h1>Elements in the ihsaudit.xtml file</h1>
+            <p class="move">
+                The audit entry elements in the <span>ihsaudit.xml file</span> are defined in a data type definition (DTD) file, <span>ihsaudit.dtd,</span> which is shipped with the NetView management console topology server as a sample. The <span>ihsaudit.dtd,</span> file is located in one of the following directories:<br>
+                For Windows systems: <span>%BINDIR%\TDS\server\sample</span><br>
+                For AIX or Linux systems: <span>$BINDIR/TDS/server/sample</span>
+            </p>
+            <p class="move">
+                <b>Note: </b>Editing this file is not recommended.
+            </p>
+            <p class="move">
+                The<span>ihsaudit.dtd</span> file lists the data elements contained in the ihsaudit.xml file. A description of each of these elements follows:
+            </p>
+            <h3 class="move1"> action Element</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT action 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                General purpose, further qualifies the action that occurred for this audit entry. See “Audit Entry Actions” on page 165 for the possible actions for each audit entry.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                Aggregation, command, cpe, flag, netconv, nmcConsole, nmcServer, sendMsg, viewCust, viewNav
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1"> admin Element</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT admin (
+                    #CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Determines, during sign on and sign off, if administrator access was requested. Will be either yes or no.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                nmcConsole
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">aggPri ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT aggPri 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Aggregation priority was changed for a real resource.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                Aggregation
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3"> 
+                None
+            </p>
+            <h3 class="move1">aggregation ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT aggregation 
+                   (action,id,ipAddr,rodmId,((aggPri)|(thresholdDeg,thresholdSevDeg, 
+                   thresholdUnsat))) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Qualifies an auditEntry to represent a change to the aggregation priority of a real resource or a change to the aggregation thresholds of an aggregate resource.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                auditEntry
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One each of (action, id, ipAddr, rodmId). One each of (aggPri) for a real resource and one each of (thresholdDeg, thresholdSevDeg, thresholdUnsat) for an aggregate resource.
+            </p>
+            <h3 class="move1">auditEntry ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT auditEntry 
+                    (date,
+                    (aggregation|command|cpe|flag|netconv|nmcConsole|nmcServer|sendmsg| 
+                    viewCust|viewNav)) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Wrappers one audit log entry.
+            </p>
+            <h5 style="margin-top: -15px;"> Parents</h5>
+            <p class="move3">
+                audirLog
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One date and one of the following elements: aggregation, command, cpe, flag, netconv, nmcConsole, nmcServer, sendMsg, viewCust, viewNav
+            </p>
+            <h3 class="move1">auditLog ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT auditLog 
+                    (auditEntry+) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Wrappers the entire audir log.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                None
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One (or more) auditEntry (or entries).
+            </p>
+            <h3 class="move1">cmd ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT cmd 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the command string to be processed. Before a command string is written to the <span>audit log, if the auditTranslateToBrowseableChars</span> attribute in the <span>server.properties</span> file is set to 1, then a subset of characters found in the command response string that cannot be browsed is translated to a character format that can be browsed. The following characters are examples:<br>
+                <br>  & is changed to & amp;  <br>  < is changed to & lt; <br> > is changed to & gt;<br>
+                For more information, see “Customizing Special Characters to be Browsed” on page 15.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                command
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">CmdResp ELEMENT</h3>
+            <h5>Fotmat</h5>
+            <pre class="sub">
+                < !ELEMENT cmdResp
+                     (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the command responses. Before a command response string is written to the audit log, the following server.properties attributes are checked in the following order:<br>
+                <b>auditCarriageReturnReplacement</b><br>
+                If the auditCarriageReturnReplacement attribute is set to 1, then any carriage return (0x0D), line feed (0x0A), or carriage return immediately followed by a line feed (0x0D0A) found in the command response string 
+                is replaced with the characters specified by <span>server properties</span> attribute
+                <span>auditCarriageReturnReplacementValue.</span><br>
+                For more information, see “Customizing the Replacement Character for Carriage Returns and Line Feeds” on page 15.<br>
+                <b>auditTranslateToBrowseableChars</b><br>
+                If the <span>auditTranslateToBrowseableChars</span>attribute is set to 1, then a subset of characters found in the command response string that cannot be browsed is translated to a format which can be browsed. The following characters are examples:<br>
+                -	& is changed to & amp;<br>
+                -	< is changed to & lt;<br>
+                -	> is changed to & gt;<br>
+                For more information, see “Customizing Special Characters to be Browsed” on page 15.<br>
+                <b>auditCommandResponseMaxSize</b><br>
+                If The <span>auditCommandResponseMaxSize</span> attribute is not equal to 0 (zero), then the command response string is truncated to the maximum length specified by the attribute.<br>
+                For more information, see “Customizing the Length of Command<br>Responses within the Audit Log” on page 14.                               
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                command
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">command ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT command 
+                    (action,id?,ipAddr?,corrId,res?,rodmId?,menuText?,(cmd|cmdResp))	>
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Qualifies an auditEntry to represent either a command to be started or the command responses.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                auditEntry
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One each of the following elements: action, corrId, (cmd|cmdResp). Optionally, one each of the following elements: id, ipAddr, res, rodmId, menuText.
+            </p>
+            <h3 class="move1"> corrld ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT corrId 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;"> Description</h5>
+            <p class="move3">
+                Contains a numeric correlation ID used to correlate a command that is started with the corresponding command responses.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="Move3">
+                command
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">cpe ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT cpe
+                     (action,id) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Qualifies an auditEntry to represent a command profile editor (CPE) batch utility sign on.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                auditEntry
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One each of action and id.
+            </p>
+            <h3 class="move1">date ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT date 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Timestamp of the audit log entry in the following format: <span>YYYY-MM-DD HH:MM:SS</span>
+            </p>
+            <h5 style="margin-top: -15;">Parents</h5>
+            <p class="move3">
+                auditEntry
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">extSearch ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT extSearch 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                When a locate resource request is performed, indicates if the extended search option was selected. Will be either yes or no
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                viewNav
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">flag ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT flag 
+                    (action,id,ipAddr,((flagMask,flagValue)|(noteMask,note))?)
+                    >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Qualifies an auditEntry to represent one of the following items:<br>
+                 Change to a flag, or flags, of a resource<br>
+                 Change to a note of a resource<br>
+                 List suspended resources request<br>
+                If several notes are changed at one time, a separate auditEntry exists for each changed note.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                auditEntry
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One each of the following elements: action, id, ipAddr. Optionally, one each of the following elements: flagMask, flagValue, noteMask, note.
+            </p>
+            <h3 class="move1">falgMask ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT flagMask 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains a hexadecimal 4-byte field, with one or more bits turned on. It represents the flag or flags that changed (not the value to which the flag changed). These bit values are defined by the UserStatus field in RODM. An example is <span>0x40000000</span>, which indicates that the suspended flag is being changed.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                flag
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">flagValue ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT flagValue 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains a hexadecimal 4-byte field, with one or more bits turned on or off. This represents the value to which the flag or flags are being changed. The value in the flagMask field represents the flag or flags being set. These values are defined by the UserStatus field in RODM. An example is <span>0x40000000</span>, which turns on the suspended flag.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                flag
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">fromHostname ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT fromHostname 
+                (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains a TCP host name from which a message is sent. This is in the context of the send message function. If the message is sent from a topology console, fromHostname contains the TCP host name of the topology console that sent the message. If the message is sent from the topology server, fromHostname contains the TCP host name of the Tivoli NetView for z/OS program connected with the topology server.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                sendMsg
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">formId ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT formId 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the user name (a Tivoli NetView for z/OS logon ID) from which a message is being sent. This is in the context of the send message function.            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                sendMsg
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">fromIpAddr ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT formIpAddr
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the IP address of the TCP/IP host name from which a message is sent. This is in the context of the send message function. If the message is sent from a topology console, fromIpAddr contains the IP address of the TCP host name of the topology console that sent the message. If the message is sent from the topology server, fromIpAddr contains the IP address of the TCP host name of the Tivoli NetView for z/OS program connected with the topology server.            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                sendMsg
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">hostname ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT hostname
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains aTCP host name.
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                netcony, nmcConsole
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">id ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT id
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains a user name (a Tivoli NetView for z/OS logon ID).
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                aggregation, command, cpe, flag, nmcConsole, viewCust, viewNav
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">initRes ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT initRes
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the initiating resource name; for example, the RODM object ID of the resource that was selected, to navigate to another view.
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                viewNav
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">ipApp ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT ipApp
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains an IP address. 
+            </p>         
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                aggregation, command, flag, netconv, nmcConsole, viewCust, viewNav
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">locateName ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT locateNAme
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the name of the resource that was specified in the Locate Resource dialog box. Before a locate name is written to the audit log, if the 
+                 <span>auditTranslateToBrowseableChars</span> attribute in the <span>server properties</span>
+                 file is set to 1, then a subset of characters found in the name that cannot be browsed is translated to a format that can be browsed. The following characters are examples:<br>
+                 & is changed to & amp;  <br>  < is changed to & lt; <br> > is changed to & gt;<br>
+                 For more information, see “Customizing Special Characters to be Browsed” on page 15.
+            </p>         
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                viewNav
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">lu62name ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT lu62name
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+               Contains the LU 6.2 address. 
+            </p>         
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                netconv 
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">menuText ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT menuText
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the menu text of the command being started. Before a menu text is written to the audit log, if the <span>auditTranslateToBrowseableChars</span> attribute in the 
+                <span>server.properties</span> file is set to 1, then a subset of characters that cannot 
+                be browsed is found in the menu text and translated into 
+                characters that can be browsed. The following characters 
+                are examples: v & is changed to &amp;
+               <br>  < is changed to & lt;
+                <br> > is changed to & gt; <br>
+                For more information, see “Customizing Special Characters to be Browsed” on page 15.
+            </p>         
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                command
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">msg EMEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT msg
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the message that was sent, using the send message function. Before a message is written to the audit log, if the 
+                <span>auditTranslateToBrowseableChars</span> attribute in the <span>server.properties</span> file is set to 1, then a subset of characters in the 
+                message that cannot be browsed is found and translated into characters that can be browsed. The following characters are examples:<br>
+                & is changed to & amp;  <br>  < is changed to & lt; <br> > is changed to & gt;<br>
+                For more information, see “Customizing Special Characters to be Browsed” on page 15.
+            </p>         
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                sendMsg
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="netconv ELEMENT"></h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT netconv 
+                    (action,nvDomain,((ipAddr,hostname)|(lu62name))) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Qualifies an auditEntry to represent a change in the NETCONV connection between the Tivoli NetView for z/OS program and the NetView management console topology server (from the perspective of the NetView management console topology server).
+            </p>         
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                auditEnry
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One each of the following elements: action, nvDomain. Optionally, if the NETCONV connection is with IP, then one each of the ipAddr and hostname elements, and, if the NETCONV connection is with LU 6.2., then one lu62name element.
+            </p>
+            <h3 class="move1">nmcConsole ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT nmcConsole 
+                    (action,id,ipAddr,hostname,admin) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Qualifies an auditEntry to represent the sign on or sign off of a NetView management console.
+            </p>         
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                auditEnry
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One each of the following elements: action, id, ipAddr, hostname, admin.
+            </p>
+            <h3 class="move1">nmcServer ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT nmcServer 
+                    (action) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Qualifies an auditEntry to represent the start or stop of the NetView management console topology server.            </p>         
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                auditEnry
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One of action.
+            </p>
+            <h3 class="move1">note ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT note (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the free-form note text that was changed for the flag of a resource. If the note was made null, this element exists with no data in it. The value in the noteMask field represents the flag (bit) to which this note pertains. Before a note is written to the audit log, if the 
+                <span>uditTranslateToBrowseableChars</span> attribute in the <span>server properties</span>
+                file is set to 1, then a subset of characters in the note that cannot be browsed is found and translated into characters that can be browsed. The following characters are examples:<br>
+                & is changed to & amp;  <br>  < is changed to & lt; <br> > is changed to & gt;<br>
+                For more information, see “Customizing Special Characters to be Browsed” on page 15.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                flag
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move3">noteMask ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT noteMask 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains a hexadecimal 4-byte field, with one bit turned on, that represents the note that was changed. An example is <span>0x40000000</span>. This indicates that the note for the suspended flag is changed.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                flag
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">nvDomain ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT nvDomain 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains a Tivoli NetView for z/OS domain ID            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                netconv
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">res ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT res
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the display name of a resource at the server.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                command
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">rodmld ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT rodmld
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the hexadecimal RODM object id, for example, <span>0000000E00000466</span>.          
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                aggergation, command, flag
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">sendMsg ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT sendMsg 
+                    (action,fromId,fromIpAddr,fromHostname,(toId,toIpAddr,toHostname)?, 
+                    msg) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Qualifies an auditEntry to represent a message that was sent, using the send message function.            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                auditEntry
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One each of the following elements: action, fromId, fromIpAddr, fromHostname, msg. Optionally, when a specific user is targeted (not a broadcast message), one each of the following elements: toId, toIpAddr, toHostname.
+            </p>
+            <h3 class="move1">thresholdDeg ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT thresholdDeg 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                The degraded threshold was changed for an aggregate resource.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                aggergation
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">thresholdSevDeg ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT thresholdSevDeg 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                The severely degraded threshold was changed for an aggregate resource.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                aggergation
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">thresholdUnsat ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT thresholdUnsat      (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                The unsatisfactory threshold was changed for an aggregate resource.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                aggergation
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">toHostname ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT toHostname
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains a TCP host name to which a message is sent. This is in the context of the send message function. If the message is sent to a topology console, toHostname contains the TCP host name of the topology console that received the message. If the message is sent to the topology server, toHostname contains the TCP host name of the Tivoli NetView for z/OS program connected with the topology server.
+            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                sendMsg 
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">told ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT told
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the user name (a Tivoli NetView for z/OS logon ID) to which a message is sent. This is within the context of the send message function.            </p>
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                sendMsg 
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">tolpAddr ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT tolpAddr
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the IP address of the TCP host name to which a message is sent. This is in the context of the send message function. If the message is sent to a topology console, toIpAddr contains the IP address of the TCP host name of the topology console that received the message. If the message is sent to the topology server, toIpAddr contains the IP address of the TCP host name of the Tivoli NetView for z/OS program connected with the topology server.
+            </p>      
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                sendMsg 
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">viewCust ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < ELEMENT viewCust 
+                    (action,id,ipAddr,viewName) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Qualifies an auditEntry to represent a view that was customized and saved at the NetView management console topology server. The view customization was saved, removed, or deleted.
+            </p>      
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                auditEntry 
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One each of the following elements: action, id, ipAddr, viewName.            
+            </p>
+            <h3 class="move1">viewName ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < ELEMENT viewNAme
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains a name of a view. Before a view name is written to the audit log, if the <span>auditTranslateToBrowseableChars</span> attribute in the <span>server.properties</span>
+                file is set to 1, then a subset of characters in the view name that cannot be browsed is found and translated to a format that can be browsed. The following characters are examples:
+                <br> & is changed to & amp;  <br>  < is changed to & lt; 
+                <br> > is changed to & gt;<br>
+                For more information, see “Customizing Special Characters to be Browsed” on page 15.
+            </p>      
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                viewCust, viewNav
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <h3 class="move1">viewNav ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT viewNav 
+                    (action,id,ipAddr,viewType,((viewName)|(initRes)|(locateName, 
+                    extSearch))) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Qualifies an auditEntry to represent view navigation. Examples include: opening a network or exception view, double-clicking a resource for more detail, configuration parents, locating a resource, closing a view.
+            </p>      
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                auditEntry
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                One each of action, id, ipAddr, viewType. One of the following elements:
+                <br>One each of locateName and extSearch
+                <br>One of initRes
+                <br>One of viewName
+            </p>
+            <h3 class="move1">viewType ELEMENT</h3>
+            <h5>Format</h5>
+            <pre class="sub">
+                < !ELEMENT viewType 
+                    (#CDATA) >
+            </pre>
+            <h5 style="margin-top: -15px;">Description</h5>
+            <p class="move3">
+                Contains the type of view.
+            </p>      
+            <h5 style="margin-top: -15px;">Parents</h5>
+            <p class="move3">
+                viewCust, viewNav
+            </p>
+            <h5 style="margin-top: -15px;">Children</h5>
+            <p class="move3">
+                None
+            </p>
+            <div class="underline1"></div>
+            <h1>Audit entry Action</h1>
+            <p class="move1">
+                The actions for the elements are explained in the following sections. All of the audit entries are 
+                <i>children</i> of the auditEntry element. Though action elements are strings, they are considered an extension of the auditEntry element and are, therefore, not translated. If the attribute (as shown in the following tables) in the 
+                <span>server.properties</span> file is equal to 1 (one), then the corresponding action is written to the audit log
+            </p>
+            <h3 class="move1"> aggergation ELEMENT</h3>
+            <p class="move3">The action element data for an aggregation audit entry is described in Table 60.</p>
+            <p><i>Table 60. Description of the aggregation action element</i></p>
+            <table>
+                <tr>
+                    <th>Action element</th>
+                    <th>Other elements</th>
+                    <th>Description</th>
+                    <th>Attribute</th>
+                </tr>
+                <tr>
+                    <td><pre>priority</pre></td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>rodmld</b> RODM object ID<br>
+                        <b>aggPri</b> Aggergation priority value
+                    </td>
+                    <td>Aggregation priority is updated for this resource.</td>
+                    <td>auditAggergationChange</td>
+                </tr>
+                <tr>
+                    <td>
+                        <pre>threshold</pre>
+                    </td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>rodmld</b> RODM object ID<br>
+                        <b>thresholdDeg</b> Degraded threshold value<br>
+                        <b>thresholdSevDeg</b> Severely degraded threshold value<br>
+                        <b>thresholdUnsat</b> Unsatisfactory threshold value
+                    </td>
+                    <td>
+                        At least one of the aggregation threshold fields is updated for this resource.
+                    </td>
+                    <td>
+                        auditAggregationChange
+                    </td>
+                </tr>
+            </table>
+            <h3 class="move1">command ELEMENT</h3>
+            <p class="move3">The action element data for a command audit entry is described in Table 61 on page 167</p>
+            <p><i>Table 61. Description of the command action element</i></p>
+            <table>
+                <tr>
+                    <th>Action element</th>
+                    <th>Other elements</th>
+                    <th>Description</th>
+                    <th>Attribute</th>
+                </tr>
+                <tr>
+                    <td><pre>execution</pre></td>
+                    <td>
+                        <b>id</b>User name<br>
+                        <b>ipAddr</b>IP address of
+                        console, if not a tserver hostcmd<br>
+                        <b>corrld</b> Correlation ID to correlate commands to their responses<br>
+                        <b>res</b>  Resource name if command is resource dependent<br>
+                        <b>rodmld</b> RODM object ID if command is resource dependent<br>
+                        <b>menuText</b> Menu text of command being processed<br>
+                        <b>cmd</b> Command string of the command being processed                                           
+                    </td>
+                    <td>A command is being initiated. Commands that are run in the Tivoli NetView for z/OS program are also logged at the NetView program; the auditing of commands and command responses, at the NetView management console server, has no effect on the netlog of Tivoli NetView for z/OS.</td>
+                    <td>auditCommand</td>
+                </tr>  
+                <tr>
+                    <td><pre>reponse</pre></td>
+                    <td>
+                        <b>id</b> User name, if not a tserver hostcmd response<br>
+                        <b>ipAddr</b> IP address of console, if not a tserver hostcmd response<br>
+                        <b>corrld</b> Correlation ID to correlate commands to their responses<br>
+                        <b>cmdRes</b> Command response string                        
+                    </td>
+                    <td>
+                        The command response string. There might be one or more audit log entries for command responses, depending on how the target of the command provides chunks of the response.
+                        Commands that are started in Tivoli NetView for z/OS are also logged at the NetView program; the auditing of commands and command responses at the NetView management console server has no effect on netlog of Tivoli NetView for z/OS.
+                    </td>
+                    <td>
+                        auditCommandResponse
+                    </td>
+                </tr>
+            </table>
+            <h3 class="move1">cpe ELEMENT</h3>
+            <p class="move3">The action element data for a cpe audit entry is described in Table 62.</p>
+            <p><i>Table 62. Description of the cpe action element</i></p>
+            <table>
+                <tr>
+                    <th>Action element</th>
+                    <th>Other elements</th>
+                    <th>Description</th>
+                    <th>Attribute</th>
+                </tr>
+                <tr>
+                    <td><pre>s i gnon</pre></td>
+                    <td><b>id</b>     Username</td>
+                    <td>Successful CPE signon</td>
+                    <td>audtitCPESignonSignoff</td>
+                </tr>
+                <tr>
+                    <td><pre>s i gnonFailed</pre></td>
+                    <td><b>id</b>     Username</td>
+                    <td>UnSuccessful CPE signon</td>
+                    <td>audtitCPESignonSignoff</td>
+                </tr>
+                <tr>
+                    <td><pre>s i gnoff</pre></td>
+                    <td><b>id</b>     Username</td>
+                    <td>CPE signoff</td>
+                    <td>audtitCPESignonSignoff</td>
+                </tr>
+            </table>
+            <h3 class="move1">flag ELEMENT</h3>
+            <p class="move3">The action element data for a flag audit entry is described in Table 63.</p>
+            <p><i>Table 63. Description of the flag action element.</i></p>
+            <table>
+                <tr>
+                    <th>Action element</th>
+                    <th>Other elements</th>
+                    <th>Description</th>
+                    <th>Attribute</th>
+                </tr>
+                <tr>
+                    <td><pre>changeFlag</pre></td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>rodmld</b> RODM object ID<br>
+                        <b>flagMask</b> <i>0xFFFFFFFF</i> value with bits on to represent the flags being changed<br>
+                        <b>flagValue</b> <i>0xFFFFFFFF</i> value with value of the bits specified by flagMask
+                    </td>
+                    <td>
+                        A flag (UserStatus field in RODM) was set on a resource. Multiple flags can be set on the resource; all changes are represented in this audit log entry.
+                    </td>
+                    <td>auditFlagChange</td>
+                </tr>
+                <tr>
+                    <td><pre>changeNote</pre></td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>noteMask</b> <i>0xFFFFFFFF</i> value with bits on to represent the note being changed<br>
+                        <b>note</b> Note was changed on the bit respresented by noteMask for this resource.
+                    </td>
+                    <td>A note (UserStatusNote field in RODM) was set on a resource. Multiple notes can be set on the resource; a separate audit log entry is written for each note.</td>
+                    <td>auditFlagChange</td>
+                </tr>
+                <tr>
+                    <td><pre>listSuspended</pre></td>
+                    <td>
+                        <b>id</b> Username<br>
+                        <b>ipAddr</b> IP address of console 
+                    </td>
+                    <td>A list suspended resources request occurred. This audit entry does not indicate if the request was successful.</td>
+                    <td>auditFlagChange</td>
+                </tr>
+            </table>
+            <h3 class="move1">netconv ELEMENT</h3>
+            <p class="move3">The action element data for a netconv audit entry is described in Table 64 on page 169</p>
+            <p><i>Table 64. Description of the netconv action element</i></p>
+            <table>
+                <tr>
+                    <th>Action element</th>
+                    <th>Other elements</th>
+                    <th>Description</th>
+                    <th>Attribute</th>
+                </tr>
+                <tr>
+                    <td><pre>up</pre></td>
+                    <td>
+                        <b>nvDomain</b> NetView domain ID<br>
+                        <b>ipAddr</b> NetView IP address if over IP<br>
+                        <b>hostname</b> NetView TCP host name if over IP<br>
+                        <b>lu62name</b> LU name if over LU 6.2
+                    </td>
+                    <td>NETCONV start</td>
+                    <td>auditNetconvUpDown</td>
+                </tr>
+                <tr>
+                    <td><pre>down</pre></td>
+                    <td>
+                        <b>nvDomain</b> NetView domain ID<br>
+                        <b>ipAddr</b> NetView IP address if over IP<br>
+                        <b>hostname</b> NetView TCP host name if over IP<br>
+                        <b>lu62name</b> LU name if over LU 6.2
+                    </td>
+                    <td>NETCONV stop</td>
+                    <td>auditNetconvUpDown</td>
+                </tr>
+            </table>
+            <h3 class="move1">nmcConsole ELEMENT</h3>
+            <p class="move3">The action element data for an nmcConsole audit entry is described in Table 65</p>
+            <p><i>Table 65. Description of the nmcConsole action element</i></p>
+            <table>
+                <tr>
+                    <th>Action element</th>
+                    <th>Other elements</th>
+                    <th>Description</th>
+                    <th>Attribute</th>
+                </tr>
+                <tr>
+                    <td><pre>s i gnon</pre></td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>hostname</b> TCP host name of console<br>
+                        <b>admin</b> Either yes or no if administrator access was requested                        
+                    </td>
+                    <td>Successful NetView management console topology console signon</td>
+                    <td>auditConsoleSignonSignoff</td>
+                </tr>
+                <tr>
+                    <td><pre>s i gnonFailed</pre></td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>hostname</b> TCP host name of console<br>
+                        <b>admin</b> Either yes or no if administrator access was requested                        
+                    </td>
+                    <td>Unsuccessful NetView management console topology console signon</td>
+                    <td>auditConsoleSignonSignoff</td>
+                </tr>
+            </table>
+            <p><i>Table 65. Description of the nmcConsole action element (continued)</i></p>
+            <table>
+                <tr>
+                    <th>Action element</th>
+                    <th>Other elements</th>
+                    <th>Description</th>
+                    <th>Attribute</th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>hostname</b> TCP host name of console<br>
+                        <b>admin</b> Either yes or no if administrator access was requested
+                    </td>
+                    <td>NetView management console topology console signoff</td>
+                    <td>auditConsoleSignonSignoff</td>
+                </tr>
+            </table>
+            <h3 class="move1">nmcServer ELEMENT</h3>
+            <p class="move3">The action element data for an <span>nmcServer auditEntry</span> is described in Table 66.</p>
+            <p><i>Table 66. Description of the nmcServer action element</i></p>
+            <table>
+                <tr>
+                    <th>Action element</th>
+                    <th>Other elements</th>
+                    <th>Description</th>
+                    <th>Attribute</th>
+                </tr>
+                <tr>
+                    <td><pre>start</pre></td>
+                    <td>NetView management console topology server is started</td>
+                    <td>auditServerStartStop</td>
+                </tr>
+                <tr>
+                    <td><pre>initialized</pre></td>
+                    <td>NetView management console topology server is initialized</td>
+                    <td>auditServerStartStop</td>
+                </tr>
+                <tr>
+                    <td><pre>stop</pre></td>
+                    <td>NetView management console topology server is stopped</td>
+                    <td>auditServerStartStop</td>
+                </tr>
+            </table>
+            <h3 class="move1">sendMsg ELEMENT</h3>
+            <p class="move3">The action element data for a sendMsg audit entry is described in Table 67.</p>
+            <p><i>Table 66. Description of the sendMsg action element</i></p>
+            <table>
+                <tr>
+                    <th>Action element</th>
+                    <th>Other elements</th>
+                    <th>Description</th>
+                    <th>Attribute</th>
+                </tr>
+                <tr>
+                    <td><pre>broadcast</pre></td>
+                    <td>
+                        <b>fromId</b>User name of the console sending the message or <i>topology server</i> if message was initiated from the NetView management console topology server<br>
+                        <b>fromIpAddr</b> IP address of the console or server sending the message<br>
+                        <b>fromHostname</b> Host name of the console or server sending the message<br>
+                        <b>msg</b> Message text that was sent                 
+                    </td>
+                    <td>A broadcast message was sent.</td>
+                    <td>auditSendMessage</td>
+                </tr>
+                <tr>
+                    <td><pre>specficUser</pre></td>
+                    <td>
+                        <b>fromId</b> User name of the
+                        console sending the message or <i>topology server</i> if message was initiated from the NetView management console topology server<br>
+                        <b>fromIpAddr</b> IP address of the console or server sending the messag<br>
+                        <b>fromHostname</b> Host name of the console or server sending the message<br>
+                        <b>told</b> Targeted console
+                        user. Can also be "topology server" if targeted to the NetView management console topology server.<br>
+                        <b>tolpAddr</b> Targeted console IP address<br>
+                        <b>toHostname</b> Targeted console host name.<br>
+                        <b>msg</b> Message text that was sent                                              
+                    </td>
+                    <td>A specific message was sent.</td>
+                    <td>auditSendMessage</td>
+                </tr>
+            </table>
+            <h3 class="move1">viewCust ELEMENT</h3>
+            <p class="move3">The action element data for a viewCust audit entry is described in Table 68.</p>
+            <p><i>Table 68. Description of the viewCust action element</i></p>         
+            <table>
+                <tr>
+                    <th>Action element</th>
+                    <th>Other elements</th>
+                    <th>Description</th>
+                    <th>Attribute</th>
+                </tr>
+                <tr>
+                    <td><pre>save</pre></td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>viewName</b> View name
+                    </td>
+                    <td>
+                        The customization of a view was saved in the database of the NetView management console server.
+                    </td>
+                    <td>auditViewCustomizationSaveRemove</td>
+                </tr>
+                <tr>
+                    <td><pre>remove</pre></td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>viewName</b> View name
+                    </td>
+                    <td>The customization of a view was removed from the databases of the NetView management console server.</td>
+                    <td>auditViewCustomizationSaveRemove</td>
+                </tr>
+                <tr>
+                    <td><pre>delete</pre></td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>viewName</b> View name
+                    </td>
+                    <td>A customized view was deleted.</td>
+                    <td>auditViewCustomizationSaveRemove</td>
+                </tr>
+            </table>
+            <h3 class="move1">viewNav ELEMENT</h3>
+            <p class="move3">The action element data for a viewNav audit entry is described in Table 69.</p>
+            <p><i>Table 69. Description of the viewNav action element</i></p>
+            <table>
+                <tr>
+                    <th>Action element</th>
+                    <th>Other elements</th>
+                    <th>Description</th>
+                    <th>Attribute</th>
+                </tr>
+                <tr>
+                    <td><pre>openRequest</pre></td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>viewType</b> Type of view requested, (for example: locateResource, moreDetail, 
+                        configParents, configChildren, configLogPhy, configLog, ConfigPhy, configBackbone, fastpath, network, exception, 
+                        configPeers)<br>
+                        <b>initRes, viewName or locateName</b>
+                        For network and exception views, the audit entry contains viewName which is the name of the view. For Locate Resource, the audit entry contains locateName, which is the resource name as entered by the operator, for example, RALV4.
+                        For the more detail, configuration or fastpath views, the audit entry contains initRes which is the RODM id of the initiating resource name.<br>
+                        <b>extSearch</b>For locate resource requests, indicates if extended search was requested. Valid values are yes or no.
+                    </td>
+                    <td>A view request was sent to Tivoli NetView for z/OS.</td>
+                    <td>auditViewOpenRequest</td>
+                </tr>
+                <tr>
+                    <td><pre>openResponse</pre></td>
+                    <td>
+                        <b>id</b> Username<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>viewType</b>Type of view request for example: moreDetail, configParents, configChildren, configPeers, configLogPhy, configLog, configPhy, configBackbone, network, exception, fastpath.<br>
+                        <b>ViewName</b> View name
+                    </td>
+                    <td>A RODM-based view was opened.</td>
+                    <td>auditViewOpenResponse</td>
+                </tr>
+                <tr>
+                    <td><pre>open</pre></td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>viewType</b> Type of view request, for example server.<br>
+                        <b>ViewName</b> View name
+                    </td>
+                    <td>A server-based view was opened.</td>
+                    <td>auditViewOpenRequest or auditViewOpenResponse</td>
+                </tr>
+                <tr>
+                    <td><pre>close</pre></td>
+                    <td>
+                        <b>id</b> User name<br>
+                        <b>ipAddr</b> IP address of console<br>
+                        <b>viewType</b> Type of view, for example: moreDetail, configParents, configChildren, configPeers, configLogPhy, configLog, configPhy, configBackbone, network, exception, fastpath.<br>
+                        <b>ViewName</b> View name
+                    </td>
+                    <td>A view was closed.</td>
+                    <td>auditViewClose</td>
+                </tr>
+            </table>
+        </div>  
+    </body>
+</html>
